@@ -1,0 +1,17 @@
+<html>
+<head>
+ <meta charset="utf-8">
+ <title>Report</title>
+ <meta name="description" content="Report example">
+</head>
+<body>
+
+<h1>The title</h1>
+{% for event in events %}
+<h2>{{ event.eventItem.title}}</h2>
+<b>{{ event.eventItem.unitKey }}</b>
+{{ event.eventItem.description }}
+{% endfor %}
+<pre>{{mystr}}</pre>
+</body>
+</html>
