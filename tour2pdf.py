@@ -3,18 +3,23 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import Response
-from weasyprint import HTML, CSS
-from weasyprint.text.fonts import FontConfiguration
+
 import urllib.parse
 import urllib.request
 import json
-from jinja2 import Template
+import tour2pdf_mod
 
 app = FastAPI()
+jinja_env = tour2pdf_mod.get_jinja_venv()
+
+
+RADTOUR_URL = "https://touren-termine.adfc.de/suche?eventType=Radtour&unitKey=158"
+# API_BASE_URL = "https://dev-api-touren-termine.adfc.de/api"
+API_BASE_URL = "https://api-touren-termine.adfc.de/api"
 
 
 def process_item(event_guid: str):
-    url = f'https://dev-api-touren-termine.adfc.de/api/eventItems/{event_guid}'
+    url = f'{API_BASE_URL}/eventItems/{event_guid}'
     raw_data = urllib.request.urlopen(url)
     data = json.loads(raw_data.read().decode('utf-8'))
     return data
@@ -22,7 +27,7 @@ def process_item(event_guid: str):
 
 def get_adfc_events(request_dict):
     urlquery = urllib.parse.urlencode(request_dict)
-    url = f"https://dev-api-touren-termine.adfc.de/api/eventItems/search?{urlquery}"
+    url = f"{API_BASE_URL}/eventItems/search?{urlquery}"
     raw_data = urllib.request.urlopen(url)
 
     data = json.loads(raw_data.read().decode('utf-8'))
@@ -52,20 +57,8 @@ def get_request_dict(lat: float = None, lng: float = None, distance: int = 20, b
     if len(unitKeys):
         request_dict['unitKeys'] = ",".join(unitKeys)
     request_dict['limit'] = limit
+    request_dict['eventType'] = 'Radtour'
     return request_dict
-
-
-def get_html(events: list):
-    with open('templates/page.html.j2') as f:
-        tmpl = Template(f.read())
-
-    mystr = json.dumps(events[0], indent=3)
-    return tmpl.render(mystr=mystr, events=events)
-
-
-def get_css():
-    return '''
-        h1 { font-family: Arial }'''
 
 
 @app.get("/api/html",
@@ -75,12 +68,12 @@ def get_css():
              }
          }, response_class=Response
          )
-def root(lat: float = None, lng: float = None, distance: int = 20, beginning: str = None, end: str = None, unitKey: str = None, unitKeys=[], limit=10):
+def root_html(lat: float = None, lng: float = None, distance: int = 20, beginning: str = None, end: str = None, unitKey: str = None, unitKeys=[], limit=10):
     request_dict = get_request_dict(
         lat, lng, distance, beginning, end, unitKey, unitKeys, limit)
     events = get_adfc_events(request_dict)
-    html_bytes = get_html(events)
-    return Response(content=html_bytes, media_type="text/html")
+    html_bytes = tour2pdf_mod.get_html(jinja_env, events, False)
+    return Response(content=html_bytes, media_type="text/html", )
 
 
 @app.get("/api/pdf",
@@ -90,20 +83,16 @@ def root(lat: float = None, lng: float = None, distance: int = 20, beginning: st
              }
          }, response_class=Response
          )
-def root(lat: float = None, lng: float = None, distance: int = 20, beginning: str = None, end: str = None, unitKey: str = None, unitKeys=[], limit=10):
+def root_pdf(lat: float = None, lng: float = None, distance: int = 20, beginning: str = None, end: str = None, unitKey: str = None, unitKeys=[], limit=10):
     request_dict = get_request_dict(
         lat, lng, distance, beginning, end, unitKey, unitKeys, limit)
     events = get_adfc_events(request_dict)
-    # logging.info(data)
-    # req = urllib.request.Request(url, data, method='GET')
-    # with urllib.request.urlopen(req) as response:
-    #    the_page = response.read()
-    font_config = FontConfiguration()
-    html = HTML(string=get_html(events))
-    css = CSS(string=get_css(), font_config=font_config)
-    pdf_bytes = html.write_pdf(
-        stylesheets=[css], font_config=font_config)
+    html_bytes = tour2pdf_mod.get_html(jinja_env, events, True)
+    pdf_bytes = tour2pdf_mod.html_to_pdf(html_bytes)
+    # stylesheets=[css], font_config=font_config)
     return Response(content=pdf_bytes, media_type="application/pdf")
 
 
+app.mount("/html_root", StaticFiles(directory="html_root",
+          html=True), name="html_root")
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
