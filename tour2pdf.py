@@ -7,19 +7,15 @@ from fastapi.responses import Response
 import urllib.parse
 import urllib.request
 import json
-import tour2pdf_mod
+from tour2pdf_mod import get_jinja_venv, get_html, html_to_pdf, AppConst
 
 app = FastAPI()
-jinja_env = tour2pdf_mod.get_jinja_venv()
-
-
-RADTOUR_URL = "https://touren-termine.adfc.de/suche?eventType=Radtour&unitKey=158"
-# API_BASE_URL = "https://dev-api-touren-termine.adfc.de/api"
-API_BASE_URL = "https://api-touren-termine.adfc.de/api"
+jinja_env = get_jinja_venv()
+print(AppConst.API_BASE_URL)
 
 
 def process_item(event_guid: str):
-    url = f'{API_BASE_URL}/eventItems/{event_guid}'
+    url = f'{AppConst.API_BASE_URL}/eventItems/{event_guid}'
     raw_data = urllib.request.urlopen(url)
     data = json.loads(raw_data.read().decode('utf-8'))
     return data
@@ -27,7 +23,7 @@ def process_item(event_guid: str):
 
 def get_adfc_events(request_dict):
     urlquery = urllib.parse.urlencode(request_dict)
-    url = f"{API_BASE_URL}/eventItems/search?{urlquery}"
+    url = f"{AppConst.API_BASE_URL}/eventItems/search?{urlquery}"
     raw_data = urllib.request.urlopen(url)
 
     data = json.loads(raw_data.read().decode('utf-8'))
@@ -72,7 +68,7 @@ def root_html(lat: float = None, lng: float = None, distance: int = 20, beginnin
     request_dict = get_request_dict(
         lat, lng, distance, beginning, end, unitKey, unitKeys, limit)
     events = get_adfc_events(request_dict)
-    html_bytes = tour2pdf_mod.get_html(jinja_env, events, False)
+    html_bytes = get_html(jinja_env, events, False)
     return Response(content=html_bytes, media_type="text/html", )
 
 
@@ -87,9 +83,8 @@ def root_pdf(lat: float = None, lng: float = None, distance: int = 20, beginning
     request_dict = get_request_dict(
         lat, lng, distance, beginning, end, unitKey, unitKeys, limit)
     events = get_adfc_events(request_dict)
-    html_bytes = tour2pdf_mod.get_html(jinja_env, events, True)
-    pdf_bytes = tour2pdf_mod.html_to_pdf(html_bytes)
-    # stylesheets=[css], font_config=font_config)
+    html_bytes = get_html(jinja_env, events, True)
+    pdf_bytes = html_to_pdf(html_bytes)
     return Response(content=pdf_bytes, media_type="application/pdf")
 
 

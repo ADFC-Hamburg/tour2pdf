@@ -7,8 +7,7 @@ import json
 from datetime import datetime
 import locale
 from markdown import markdown
-RADTOUR_URL = "https://touren-termine.adfc.de/suche?eventType=Radtour&unitKey=158"
-TOUR_URL_PREFIX = "https://touren-termine.adfc.de/radveranstaltung/"
+from .const import AppConst
 
 
 def qrcode_filter(input):
@@ -51,5 +50,20 @@ def get_jinja_venv():
 
 def get_html(jinja_env, events: list, pdf_view: bool):
     tmpl = jinja_env.get_template('page.html.j2')
-    mystr = json.dumps(events[0], indent=3)
-    return tmpl.render(events=events, pdf_view=pdf_view, RADTOUR_URL=RADTOUR_URL, TOUR_URL_PREFIX=TOUR_URL_PREFIX)
+    from_date = None
+    to_date = None
+    for e in events:
+        if e['eventItem']['beginning'] is not None:
+            datum = datetime.fromisoformat(e['eventItem']['beginning'])
+            if from_date is None or datum < from_date:
+                from_date = datum
+            if to_date is None or datum > to_date:
+                to_date = datum
+    return tmpl.render(events=events,
+                       pdf_view=pdf_view,
+                       RADTOUR_URL=AppConst.RADTOUR_URL,
+                       TOUR_URL_PREFIX=AppConst.TOUR_URL_PREFIX,
+                       VERSION=AppConst.VERSION,
+                       today=datetime.now().isoformat(),
+                       from_date=from_date.isoformat(),
+                       to_date=to_date.isoformat())

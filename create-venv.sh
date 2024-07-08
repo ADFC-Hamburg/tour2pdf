@@ -1,4 +1,4 @@
 #!/bin/bash
-python3 -m venv myvenv
+python3 -m venv .venv
 
-./myvenv/bin/pip3 install fastapi weasyprint qrcode
+./.venv/bin/pip3 install -r ./requirements.txt

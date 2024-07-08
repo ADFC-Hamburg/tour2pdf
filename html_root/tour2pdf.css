@@ -69,43 +69,59 @@ header {
 h2 {
     color: rgb(245,130,32);
 }
+.datum {
+    font-size: 15px;
+    font-weight: bold;
+}
+.tour_location {
+    font-size: 13px;
+}
 footer {
-    height: 2cm;
+    height: 20mm;
     width: 100%;
     font-size: 10px;
+    position: relative;
     .kasten_unten_links {
-        position: relative;
+        position: absolute;
         left: 0mm;
+        top: 0mm;
         border: 1px solid black;
         width: 55mm;
         height: 20mm;
     }
     .kasten_unten_mitte {
-        position: left;
-        left: 62mm;
+        position: absolute;
+        left: 60mm;
+        top: 0mm;
         border: 1px solid black;
-        width: 55mm;
+        width: 57mm;
         height: 20mm;
         .links {
-            width: 35mm;
+            position: absolute;
+            left: 0mm;
+            top: 0mm;
+            width: 37mm;
         }
         .rechts {
-            position: relative;
-            left: 100mm;
+            position: absolute;
+            left: 40mm;
+            top: 0mm;
             width: 16mm;
             height: 16mm;
         }
     }
     .kasten_unten_rechts {
-        position: relative;
+        position: absolute;
         left: 120mm;
+        top: 0mm;
         border: 1px solid black;
         width: 50mm;
         height: 20mm;
     }
     .unten_rechts_seite {
-        position: relative;
+        position: absolute;
         left: 168mm;
+        top: 10mm;
         transform: rotate(270deg);
     }
 }

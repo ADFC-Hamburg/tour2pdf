@@ -13,7 +13,7 @@ Instalation: Linux mit Python
 
 Starten mit:
 ```
-./myvenv/bin/fastapi dev ./tour2pdf.py
+./.venv/bin/fastapi dev ./tour2pdf.py
 ```
 
 Dann einen Browser auf:
