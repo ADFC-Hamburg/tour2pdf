@@ -57,7 +57,8 @@
             <div class="tour_cost">
                 {% if event.eventItemPrices |length >0 %}
                 <b>Kosten:</b> {% for price in event.eventItemPrices %}
-                {{ price.price }} € {{ price.groupName }} <br>
+                {% if loop.index>1 %},{% endif %}
+                {{ price.price }} € {{ price.groupName }}
                 {% endfor %}
                 {% endif %}
             </div>
@@ -87,7 +88,9 @@
             <b>Höhenmeter:</b> {{ event.eventItem.cTourHeight }}&nbsp;m<br>
             <b>Geschwindigkeit:</b> {{ event.eventItem.cTourSpeedKmh }}&nbsp;km/h<br>
             <b>Tourlänge:</b> {{ event.eventItem.cTourLengthKm }}&nbsp;km<br>
-            <img class="tour-qrcode" src="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) | qrcode }}">
+            <a href="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) }}">
+                <img class="tour-qrcode" src="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) | qrcode }}">
+            </a>
         </div>
     </div>
     </div>
