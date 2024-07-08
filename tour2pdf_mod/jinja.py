@@ -1,19 +1,21 @@
+""" Jinja 2 Environment Part
+"""
+import io
+import json
+from base64 import b64encode
+from datetime import datetime
+import locale
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 import qrcode
-import io
-from base64 import b64encode
-import json
-from datetime import datetime
-import locale
 from markdown import markdown
 from .const import AppConst
 
 
-def qrcode_filter(input):
+def qrcode_filter(qrinput):
     """QR Code filter"""
     qr = qrcode.QRCode()
-    qr.add_data(input)
+    qr.add_data(qrinput)
     m = qr.make_image()
     img_byte_arr = io.BytesIO()
     m.save(img_byte_arr, format="PNG")
@@ -21,21 +23,25 @@ def qrcode_filter(input):
     return f'data:image/png;base64, {b64str}'
 
 
-def to_json_filter(input):
-    return json.dumps(input, indent=2)
+def to_json_filter(jinput):
+    """ Converst a datastructure to json"""
+    return json.dumps(jinput, indent=2)
 
 
-def date_format_filter(input: str, format: str):
-    date_obj = datetime.fromisoformat(input)
+def date_format_filter(dinput: str, dateformat: str):
+    """ Converts an ISO Datestring to a german Datestr with format"""
+    date_obj = datetime.fromisoformat(dinput)
     locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
-    return date_obj.strftime(format)
+    return date_obj.strftime(dateformat)
 
 
-def markdown2html_filter(input: str):
-    return markdown(input)
+def markdown2html_filter(mdinput: str):
+    """ Convert markdown to html"""
+    return markdown(mdinput)
 
 
 def get_jinja_venv():
+    """ Get an jinja2 Environment """
     jinja_env = Environment(
         loader=PackageLoader("tour2pdf", "templates"),
         autoescape=select_autoescape()
@@ -49,6 +55,7 @@ def get_jinja_venv():
 
 
 def get_html(jinja_env, events: list, pdf_view: bool):
+    """ get html output"""
     tmpl = jinja_env.get_template('page.html.j2')
     from_date = None
     to_date = None
