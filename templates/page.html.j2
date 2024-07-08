@@ -104,13 +104,14 @@
             Dieser Auszug wurde automatisiert erstellt am
             {{ today |date_format('%d.%m.%Y') }}</div>
         <div class="kasten_unten_mitte">
-            <div class="links">Hinweis: Online finden Sie tages-
+        </div>
+        <div class="links">Hinweis: Online finden Sie tages-
                 aktuell unser Tourenangebot unter:<br>
                 {{ RADTOUR_URL }}
                 und QR-Code mit dem Link zu
                 unseren Touren </div>
-            <img class="rechts" src="{{ RADTOUR_URL | qrcode }}">
-        </div>
+        <img class="rechts" src="{{ RADTOUR_URL | qrcode }}">
+
         <div class="kasten_unten_rechts">Allgemeiner Deutscher Fahrrad-Club
             Landesverband Hamburg e. V.<br>
             Koppel 34–36<br>
