@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     {% if not pdf_view %}
     <base href="/html_root/" target="_blank">
@@ -8,101 +9,115 @@
     <meta name="generator" content="tour2html {{VERSION }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link rel="stylesheet" href="tour2pdf.css" />
-    <title>ADFC Hamburg Radtouren {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}</title>
-    <meta name="description" content="ADFC Hamburg Radtouren {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}">
+    <title>ADFC Hamburg Radtouren {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}
+    </title>
+    <meta name="description"
+        content="ADFC Hamburg Radtouren {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}">
 </head>
+
 <body>
-<header>
-    <img class="imgoben" src="image/logo_hamburg.png">
-    <div class="ueberschrift">Radtouren</div>
-    <img class="imgrechts" src="image/adfc-radtour-hamburgadfc-hamburg.jpg">
-</header>
+    <header>
+        <img class="imgoben" src="image/logo_hamburg.png">
+        <div class="ueberschrift">Radtouren</div>
+        <img class="imgrechts" src="image/adfc-radtour-hamburgadfc-hamburg.jpg">
+    </header>
 
-{% for event in events %}
-<div class="tour">
-<div class="inhalt">
-{% if event.eventItem.beginning |date_format('%d.%m.%Y') == (event.eventItem.end |date_format('%d.%m.%Y')) %}
-<div class="datum">{{ event.eventItem.beginning |date_format('%A %d.%B.%Y %H:%M') }} -
-{{ event.eventItem.end |date_format('%H:%M') }}</div>
-{% else %}
-<div class="datum">{{ event.eventItem.beginning |date_format('%A %d.%B. %H:%M') }} -
-{{ event.eventItem.end |date_format('%A %d.%B.%Y %H:%M') }}</div>
-{% endif %}
-<h2>{{ event.eventItem.title}}</h2>
-{% set start= event.tourLocations | selectattr('type','equalto','Startpunkt') |list %}
-{% set ziel= event.tourLocations | selectattr('type','equalto','Zielort') |list %}
-{% if start |length >0 and ziel |length >0 %}
-{% if start[0].latitude==ziel[0].latitude and start[0].longitude == ziel[0].longitude %}
-<div class="tour_location">
-<b>Start- und Zielpunkt:</b> {{ start[0].name }} {{ start[0].street }} {{ start[0].zipCode }} {{ start[0].city}}
-</div>
-{% else %}
-<div class="tour_location">
-<b>Start:</b> {{ start[0].name }} {{ start[0].street }} {{ start[0].zipCode }} {{ start[0].city}}<br>
-<b>Ziel:</b> {{ ziel[0].name }} {{ ziel[0].street }} {{ ziel[0].zipCode }} {{ ziel[0].city}}<br>
-</div>
-{% endif %}
-{% elif start | length >0  %}
-<div class="tour_location">
-<b>Start:</b> {{ start[0].name }} {{ start[0].street }} {{ start[0].zipCode }} {{ start[0].city}}<br>
-</div>
-{% endif %}
-<div class="tour_description" >{{ event.eventItem.description | markdown_to_html }}</div>
-<div class="tour_cost">
-{% if event.eventItemPrices |length >0 %}
-<b>Kosten:</b> {% for price in event.eventItemPrices %}
-{{ price.price }} € {{ price.groupName }} <br>
-{% endfor %}
-{% endif %}
-</div>
-{% if 'users' in event.keys() and event.users %}
-<div class="tour_guide">
-<b>Tourleitung:</b> {% for user in event.users |default([]) %}{% if loop.index>1 %},{% endif %} {{ user.firstName }} {{ user.lastName}}  {% endfor %}<br>
-</div>
-<div class="API_LINK>
-<b>API:</b> <a href="https://api-touren-termine.adfc.de/api/eventItems/{{ event.eventItem.key }}">https://api-touren-termine.adfc.de/api/eventItems/{{ event.eventItem.key }}</a>
-</div>
-</div>
-<div class="metadata">
-{% for cat in event.itemTags | map(attribute='category') |list |sort |unique  %}
-<b>{{ cat }}:</b><br>
-{{ event.itemTags |selectattr('category','equalto',cat) | map(attribute='tag') |list |sort |join(', ') }}<br>
-{% endfor %}
-{% set oberflaeche = ['-','durchgehend Asphalt', 'fester Belag', 'unebener Untergrund', 'unbefestigte Wege'] %}
-<b>Oberfläche:</b>{{ oberflaeche[event.eventItem.cTourSurface] }}
-{% set steigung = ['-','flach', 'einzelne Steigungen', 'hügelig', 'bergig'] %}
-<b>Steigung</b>{{ steigung[event.eventItem.cTourClimb] }}<br>
-<b>Höhenmeter:</b> {{ event.eventItem.cTourHeight }}&nbsp;m<br>
-<b>Geschwindigkeit:</b> {{ event.eventItem.cTourSpeedKmh }}&nbsp;km/h<br>
-<b>Tourlänge:</b> {{ event.eventItem.cTourLengthKm }}&nbsp;km<br>
-<img class="tour-qrcode" src="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) | qrcode }}"></div>
-</div>
-</div>
-{% endif %}
+    {% for event in events %}
+    <div class="tour">
+        <div class="inhalt">
+            {% if event.eventItem.beginning |date_format('%d.%m.%Y') == (event.eventItem.end |date_format('%d.%m.%Y'))
+            %}
+            <div class="datum">{{ event.eventItem.beginning |date_format('%A %d.%B.%Y %H:%M') }} -
+                {{ event.eventItem.end |date_format('%H:%M') }}</div>
+            {% else %}
+            <div class="datum">{{ event.eventItem.beginning |date_format('%A %d.%B. %H:%M') }} -
+                {{ event.eventItem.end |date_format('%A %d.%B.%Y %H:%M') }}</div>
+            {% endif %}
+            <h2>{{ event.eventItem.title}}</h2>
+            {% set start= event.tourLocations | selectattr('type','equalto','Startpunkt') |list %}
+            {% set ziel= event.tourLocations | selectattr('type','equalto','Zielort') |list %}
+            {% if start |length >0 and ziel |length >0 %}
+            {% if start[0].latitude==ziel[0].latitude and start[0].longitude == ziel[0].longitude %}
+            <div class="tour_location">
+                <b>Start- und Zielpunkt:</b> {{ start[0].name }} {{ start[0].street }} {{ start[0].zipCode }} {{
+                start[0].city}}
+            </div>
+            {% else %}
+            <div class="tour_location">
+                <b>Start:</b> {{ start[0].name }} {{ start[0].street }} {{ start[0].zipCode }} {{ start[0].city}}<br>
+                <b>Ziel:</b> {{ ziel[0].name }} {{ ziel[0].street }} {{ ziel[0].zipCode }} {{ ziel[0].city}}<br>
+            </div>
+            {% endif %}
+            {% elif start | length >0 %}
+            <div class="tour_location">
+                <b>Start:</b> {{ start[0].name }} {{ start[0].street }} {{ start[0].zipCode }} {{ start[0].city}}<br>
+            </div>
+            {% endif %}
+            <div class="tour_description">{{ event.eventItem.description | markdown_to_html }}</div>
+            <div class="tour_cost">
+                {% if event.eventItemPrices |length >0 %}
+                <b>Kosten:</b> {% for price in event.eventItemPrices %}
+                {{ price.price }} € {{ price.groupName }} <br>
+                {% endfor %}
+                {% endif %}
+            </div>
+            {% if 'users' in event.keys() and event.users %}
+            <div class="tour_guide">
+                <b>Tourleitung:</b> {% for user in event.users |default([]) %}{% if loop.index>1 %},{% endif %} {{
+                user.firstName }} {{ user.lastName}} {% endfor %}<br>
+            </div>
+            {% if SHOW_API_LINK %}
+            <div class="API_LINK>
+                <b>API:</b> <a href=" https://api-touren-termine.adfc.de/api/eventItems/{{ event.eventItem.key }}">
+                https://api-touren-termine.adfc.de/api/eventItems/{{ event.eventItem.key }}</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="metadata">
+            {% for cat in event.itemTags | map(attribute='category') |list |sort |unique %}
+            <b>{{ cat }}:</b><br>
+            {{ event.itemTags |selectattr('category','equalto',cat) | map(attribute='tag') |list |sort |join(', ')
+            }}<br>
+            {% endfor %}
+            {% set oberflaeche = ['-','durchgehend Asphalt', 'fester Belag', 'unebener Untergrund', 'unbefestigte Wege']
+            %}
+            <b>Oberfläche:</b>{{ oberflaeche[event.eventItem.cTourSurface] }}<br>
+            {% set steigung = ['-','flach', 'einzelne Steigungen', 'hügelig', 'bergig'] %}
+            <b>Steigung:</b>{{ steigung[event.eventItem.cTourClimb] }}<br>
+            <b>Höhenmeter:</b> {{ event.eventItem.cTourHeight }}&nbsp;m<br>
+            <b>Geschwindigkeit:</b> {{ event.eventItem.cTourSpeedKmh }}&nbsp;km/h<br>
+            <b>Tourlänge:</b> {{ event.eventItem.cTourLengthKm }}&nbsp;km<br>
+            <img class="tour-qrcode" src="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) | qrcode }}">
+        </div>
+    </div>
+    </div>
+    {% endif %}
 
 
-{% endfor %}
+    {% endfor %}
 
-<footer>
-                <div class="kasten_unten_links">Auszug aus dem Radtourenprogramm des ADFC
-                Hamburg, für Touren von
-                   {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}.<br>
-                Dieser Auszug wurde automatisiert erstellt am
-                {{ today |date_format('%d.%m.%Y') }}</div>
-                <div class="kasten_unten_mitte">
-                <div class="links">Hinweis: Online finden Sie tages-
+    <footer>
+        <div class="kasten_unten_links">Auszug aus dem Radtourenprogramm des ADFC
+            Hamburg, für Touren von
+            {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}.<br>
+            Dieser Auszug wurde automatisiert erstellt am
+            {{ today |date_format('%d.%m.%Y') }}</div>
+        <div class="kasten_unten_mitte">
+            <div class="links">Hinweis: Online finden Sie tages-
                 aktuell unser Tourenangebot unter:<br>
                 {{ RADTOUR_URL }}
                 und QR-Code mit dem Link zu
                 unseren Touren </div>
-                <img class="rechts" src="{{ RADTOUR_URL | qrcode }}"></div>
-                <div class="kasten_unten_rechts">Allgemeiner Deutscher Fahrrad-Club
-                Landesverband Hamburg e. V.<br>
-                Koppel 34–36<br>
-                20099 Hamburg<br>
-                www.hamburg.adfc.de<br>
-                kontakt@hamburg.adfc.de</div>
-                <div class="unten_rechts_seite">V: {{ VERSION }}</div>
-</footer>
+            <img class="rechts" src="{{ RADTOUR_URL | qrcode }}">
+        </div>
+        <div class="kasten_unten_rechts">Allgemeiner Deutscher Fahrrad-Club
+            Landesverband Hamburg e. V.<br>
+            Koppel 34–36<br>
+            20099 Hamburg<br>
+            www.hamburg.adfc.de<br>
+            kontakt@hamburg.adfc.de</div>
+        <div class="unten_rechts_seite">V: {{ VERSION }}</div>
+    </footer>
 </body>
+
 </html>

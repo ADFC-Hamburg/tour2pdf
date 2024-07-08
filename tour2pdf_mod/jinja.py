@@ -71,6 +71,7 @@ def get_html(jinja_env, events: list, pdf_view: bool):
                        RADTOUR_URL=AppConst.RADTOUR_URL,
                        TOUR_URL_PREFIX=AppConst.TOUR_URL_PREFIX,
                        VERSION=AppConst.VERSION,
+                       SHOW_API_LINK=AppConst.SHOW_API_LINK,
                        today=datetime.now().isoformat(),
                        from_date=from_date.isoformat(),
                        to_date=to_date.isoformat())

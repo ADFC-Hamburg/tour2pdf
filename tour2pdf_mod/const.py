@@ -10,3 +10,4 @@ class AppConst:
     API_BASE_URL = "https://api-touren-termine.adfc.de/api"
     VERSION = "0.9"
     TOUR_URL_PREFIX = "https://touren-termine.adfc.de/radveranstaltung/"
+    SHOW_API_LINK = False
