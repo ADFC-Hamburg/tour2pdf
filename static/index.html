@@ -1,13 +1,36 @@
 <html>
     <body>
         <H1>ADFC tour2pdf Kurzanleitung</H1>
+        <p>
+        Um eine neue PDF Datei zu erzeugen, bitte diese Formular ausfüllen:
+        </p><p>
+        <form action="/api/pdf" method="get">
+            <input type="date" id="beginning" name="beginning"/>
+            <input type="date" id="end" name="end"/>
+            <input type="hidden" name="unitKey" value="158">
+            <input type="hidden" name="eventType" value="Radtour">
+            Maximale Anzahl an Touren: <input type="text" name="limit" value="30">
+            <input type="submit">
+        </form>
+        <script>
+            function toDateInputValue(dateObject){
+                const local = new Date(dateObject);
+                local.setMinutes(dateObject.getMinutes() - dateObject.getTimezoneOffset());
+                return local.toJSON().slice(0,10);
+            };
+            document.getElementById('beginning').value = toDateInputValue(new Date());
+            var end = new Date();
+            end.setDate(end.getDate() + 30);
+            document.getElementById('end').value = toDateInputValue(end);
+        </script>
+        </p>
+        <p>Oder:</p>
 
         <p>1. Gehe auf https://touren-termine.adfc.de/ und mache eine gute Suche.</p>
 
         <p>2. Nimm die URL, entferne den Teil:
             <b>https://touren-termine.adfc.de/suche?</b>
            und erstze ihn durch die URL die im Browser steht und den Wörtern: /api/pdf? oder /api/html?</p>
-
     </body>
 </html>
 
