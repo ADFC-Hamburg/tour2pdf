@@ -47,7 +47,32 @@ header .ueberschrift {
   font-size: 35px;
   font-weight: bold;
 }
-
+.diff  {
+    float: right;
+    margin-left: 10mm;
+    margin-right: 10mm;
+    padding: 1mm;
+}
+.diff_sehr_einfach {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+.diff_einfach {
+    color: #fff;
+    background-color: #28a745;
+}
+.diff_mittel {
+    color: #fff;
+    background-color: #17a2b8;
+}
+.diff_schweer {
+    color: #212529;
+    background-color: #ffc107;
+}
+.diff_sehr_schweer {
+    color: #fff;
+    background-color: #dc3545;
+}
 .tour {
   font-size: 11px;
   page-break-inside: avoid;
