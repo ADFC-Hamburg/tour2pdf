@@ -20,7 +20,7 @@ def qrcode_filter(qrinput):
     img_byte_arr = io.BytesIO()
     m.save(img_byte_arr, format="PNG")
     b64str = b64encode(img_byte_arr.getvalue()).decode('utf-8')
-    return f'data:image/png;base64, {b64str}'
+    return f'data:image/png;base64,{b64str}'
 
 
 def to_json_filter(jinput):

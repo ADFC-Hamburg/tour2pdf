@@ -1,128 +1,129 @@
 html {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 @page {
-    size: A4 portrait;
-    margin-top: 20mm;
-    margin-bottom: 15mm;
-    margin-left: 16mm;
-    margin-right: 12mm;
-    @top-center {
-        content: "ADFC Hamburg Radtouren Seite " counter(page) " von " counter(pages);
-    }
-    header {
-        display: none;
-    }
+  size: A4 portrait;
+  margin-top: 20mm;
+  margin-bottom: 15mm;
+  margin-left: 16mm;
+  margin-right: 12mm;
+  @top-center {
+    content: "ADFC Hamburg Radtouren Seite " counter(page) " von "
+      counter(pages);
+  }
+}
+@page header {
+  display: none;
 }
 @page :first {
-    margin-top: 50mm;
-    @top-center {
-        content: ""
-    }
+  margin-top: 50mm;
+  @top-center {
+    content: "";
+  }
 }
 header {
-    position: relative;
-    margin-top: -30mm;
-    width: 100%;
-    height: 40mm;
-
-    .imgrechts {
-        position: absolute;
-        left: 6cm;
-        top: 0cm;
-        width: 12cm;
-    }
-    .imgoben {
-        position: absolute;
-        left: 0cm;
-        top: 0cm;
-        width: 51mm;
-    }
-    .ueberschrift {
-        position: absolute;
-        left: 0cm;
-        top: 30mm;
-        font-size: 35px;
-        font-weight: bold;
-    }
-
+  position: relative;
+  margin-top: -30mm;
+  width: 100%;
+  height: 40mm;
 }
+header .imgrechts {
+  position: absolute;
+  left: 6cm;
+  top: 0cm;
+  width: 12cm;
+}
+header .imgoben {
+  position: absolute;
+  left: 0cm;
+  top: 0cm;
+  width: 51mm;
+}
+header .ueberschrift {
+  position: absolute;
+  left: 0cm;
+  top: 30mm;
+  font-size: 35px;
+  font-weight: bold;
+}
+
 .tour {
-    font-size: 11px;
-    page-break-inside: avoid;
-    width: 100%;
-    display: table;
-    margin-bottom: 10mm;
+  font-size: 11px;
+  page-break-inside: avoid;
+  width: 100%;
+  display: table;
+  margin-bottom: 10mm;
 }
 .inhalt {
-    display: table-cell;
-    width: 110mm;
+  display: table-cell;
+  width: 110mm;
 }
 .metadata {
-    display: table-cell;
-    width: 50mm;
+  display: table-cell;
+  width: 50mm;
 }
 .tour-qrcode {
-    width: 22mm;
-    height: 22mm;
+  width: 22mm;
+  height: 22mm;
 }
 h2 {
-    color: rgb(245,130,32);
+  color: rgb(245, 130, 32);
 }
 .datum {
-    font-size: 15px;
-    font-weight: bold;
+  font-size: 15px;
+  font-weight: bold;
 }
 .tour_location {
-    font-size: 13px;
+  font-size: 13px;
 }
 footer {
-    height: 25mm;
-    width: 100%;
-    font-size: 10px;
-    position: relative;
-    .kasten_unten_links {
-        position: absolute;
-        left: 0mm;
-        top: 0mm;
-        border: 1px solid black;
-        width: 55mm;
-        height: 25mm;
-    }
-    .kasten_unten_mitte {
-        position: absolute;
-        left: 60mm;
-        top: 0mm;
-        border: 1px solid black;
-        width: 57mm;
-        height: 25mm;
-    }
-    .links {
-        position: absolute;
-        left: 61mm;
-        top: 1mm;
-        width: 37mm;
-        height: 24mm;
-    }
-    .rechts {
-        position: absolute;
-        left: 100mm;
-        top: 1mm;
-        width: 16mm;
-        height: 16mm;
-    }
-    .kasten_unten_rechts {
-        position: absolute;
-        left: 120mm;
-        top: 0mm;
-        border: 1px solid black;
-        width: 50mm;
-        height: 25mm;
-    }
-    .unten_rechts_seite {
-        position: absolute;
-        left: 168mm;
-        top: 10mm;
-        transform: rotate(270deg);
-    }
+  height: 25mm;
+  width: 100%;
+  font-size: 10px;
+  position: relative;
+}
+footer .kasten_unten_links {
+  position: absolute;
+  left: 0mm;
+  top: 0mm;
+  border: 1px solid black;
+  width: 55mm;
+  height: 25mm;
+}
+footer .kasten_unten_mitte {
+  position: absolute;
+  left: 60mm;
+  top: 0mm;
+  border: 1px solid black;
+  width: 57mm;
+  height: 25mm;
+}
+footer .links {
+  position: absolute;
+  left: 61mm;
+  top: 1mm;
+  width: 37mm;
+  height: 24mm;
+}
+footer .rechts {
+  position: absolute;
+  left: 100mm;
+  top: 1mm;
+  width: 16mm;
+  height: 16mm;
+}
+footer .kasten_unten_rechts {
+  position: absolute;
+  left: 120mm;
+  top: 0mm;
+  border: 1px solid black;
+  width: 50mm;
+  height: 25mm;
+}
+footer .unten_rechts_seite {
+  position: absolute;
+  left: 168mm;
+  top: 10mm;
+  transform: rotate(270deg);
 }

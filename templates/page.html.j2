@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 
 <head>
     {% if not pdf_view %}
     <base href="/html_root/" target="_blank">
     {% endif %}
-    <meta charset="utf-8" />
-    <meta name="generator" content="tour2html {{VERSION }}" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <link rel="stylesheet" href="tour2pdf.css" />
+    <meta charset="utf-8">
+    <meta name="generator" content="tour2html {{VERSION }}">
+    <link rel="stylesheet" href="tour2pdf.css">
     <title>ADFC Hamburg Radtouren {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}
     </title>
     <meta name="description"
@@ -17,9 +16,9 @@
 
 <body>
     <header>
-        <img class="imgoben" src="image/logo_hamburg.png">
+        <img class="imgoben" src="image/logo_hamburg.png" alt="ADFC Hamburg Logo">
         <div class="ueberschrift">Radtouren</div>
-        <img class="imgrechts" src="image/adfc-radtour-hamburgadfc-hamburg.jpg">
+        <img class="imgrechts" src="image/adfc-radtour-hamburgadfc-hamburg.jpg" alt="Bild mit Radfahrenden">
     </header>
 
     {% for event in events %}
@@ -68,7 +67,7 @@
                 user.firstName }} {{ user.lastName}} {% endfor %}<br>
             </div>
             {% if SHOW_API_LINK %}
-            <div class="API_LINK>
+            <div class="api_link">
                 <b>API:</b> <a href="https://api-touren-termine.adfc.de/api/eventItems/{{ event.eventItem.key }}">
                 https://api-touren-termine.adfc.de/api/eventItems/{{ event.eventItem.key }}</a>
             </div>
@@ -89,10 +88,9 @@
             <b>Geschwindigkeit:</b> {{ event.eventItem.cTourSpeedKmh }}&nbsp;km/h<br>
             <b>Tourlänge:</b> {{ event.eventItem.cTourLengthKm }}&nbsp;km<br>
             <a href="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) }}">
-                <img class="tour-qrcode" src="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) | qrcode }}">
+                <img class="tour-qrcode" src="{{ (TOUR_URL_PREFIX+event.eventItem.cSlug) | qrcode }}" alt="QR Code mit Link zum Tourenportal">
             </a>
         </div>
-    </div>
     </div>
     {% endif %}
     {% endfor %}
@@ -110,7 +108,7 @@
                 {{ RADTOUR_URL }}
                 und QR-Code mit dem Link zu
                 unseren Touren </div>
-        <img class="rechts" src="{{ RADTOUR_URL | qrcode }}">
+        <img class="rechts" src="{{ RADTOUR_URL | qrcode }}" alt="QR-Code mit Link zur Touren-Übersicht">
 
         <div class="kasten_unten_rechts">Allgemeiner Deutscher Fahrrad-Club
             Landesverband Hamburg e. V.<br>
