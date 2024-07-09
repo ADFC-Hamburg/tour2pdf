@@ -24,6 +24,22 @@
     {% for event in events %}
     <div class="tour">
         <div class="inhalt">
+            {% if event.eventItem.cAdjustedTourDifficulty != ''%}
+            {% set diff_score = event.eventItem.cAdjustedTourDifficulty | float %}
+            {% else %}
+            {% set diff_score = event.eventItem.cTourDifficulty | float %}
+            {% endif %}
+            {% if diff_score <1.5 %}
+            {% set difficulty = 'sehr einfach' %}
+            {% elif diff_score <2.3 %}
+            {% set difficulty = 'einfach' %}
+            {% elif diff_score <3.1 %}
+            {% set difficulty = 'mittel' %}
+            {% elif diff_score <4 %}
+            {% set difficulty = 'schweer' %}
+            {% else %}
+            {% set difficulty = 'sehr schweer' %}
+            {%  endif %}
             {% if event.eventItem.beginning |date_format('%d.%m.%Y') == (event.eventItem.end |date_format('%d.%m.%Y'))
             %}
             <div class="datum">{{ event.eventItem.beginning |date_format('%A %d.%B.%Y %H:%M') }} -
@@ -32,7 +48,7 @@
             <div class="datum">{{ event.eventItem.beginning |date_format('%A %d.%B. %H:%M') }} -
                 {{ event.eventItem.end |date_format('%A %d.%B.%Y %H:%M') }}</div>
             {% endif %}
-            <h2>{{ event.eventItem.title}}</h2>
+            <h2>{{ event.eventItem.title}} <span class="diff diff_{{ difficulty.replace(' ','_') }}">{{ difficulty }}<!-- {{ diff_score }} --></span></h2>
             {% set start= event.tourLocations | selectattr('type','equalto','Startpunkt') |list %}
             {% set ziel= event.tourLocations | selectattr('type','equalto','Zielort') |list %}
             {% if start |length >0 and ziel |length >0 %}
