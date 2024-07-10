@@ -8,10 +8,10 @@
     <meta charset="utf-8">
     <meta name="generator" content="tour2html {{VERSION }}">
     <link rel="stylesheet" href="tour2pdf.css">
-    <title>ADFC Hamburg Radtouren {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}
+    <title>ADFC Hamburg Radtouren {{ from_date |date_format('%d. %m %Y')}} bis {{ to_date |date_format('%d. %m %Y')}}
     </title>
     <meta name="description"
-        content="ADFC Hamburg Radtouren {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}">
+        content="ADFC Hamburg Radtouren {{ from_date |date_format('%d. %m %Y')}} bis {{ to_date |date_format('%d. %m %Y')}}">
 </head>
 
 <body>
@@ -114,7 +114,7 @@
     <footer>
         <div class="kasten_unten_links">Auszug aus dem Radtourenprogramm des ADFC
             Hamburg, für Touren von
-            {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}.<br>
+            {{ from_date |date_format('%d. %m %Y')}} bis {{ to_date |date_format('%d. %m %Y')}}.<br>
             Dieser Auszug wurde automatisiert erstellt am
             {{ today |date_format('%d.%m.%Y') }}</div>
         <div class="kasten_unten_mitte">
