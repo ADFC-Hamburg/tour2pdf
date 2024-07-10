@@ -36,9 +36,9 @@
             {% elif diff_score <3.1 %}
             {% set difficulty = 'mittel' %}
             {% elif diff_score <4 %}
-            {% set difficulty = 'schweer' %}
+            {% set difficulty = 'schwer' %}
             {% else %}
-            {% set difficulty = 'sehr schweer' %}
+            {% set difficulty = 'sehr schwer' %}
             {%  endif %}
             {% if event.eventItem.beginning |date_format('%d.%m.%Y') == (event.eventItem.end |date_format('%d.%m.%Y'))
             %}
