@@ -9,6 +9,6 @@ class AppConst:
     RADTOUR_BASE_URL = "https://touren-termine.adfc.de/suche?"
     # API_BASE_URL = "https://dev-api-touren-termine.adfc.de/api"
     API_BASE_URL = "https://api-touren-termine.adfc.de/api"
-    VERSION = "0.18"
+    VERSION = "0.19"
     TOUR_URL_PREFIX = "https://touren-termine.adfc.de/radveranstaltung/"
     SHOW_API_LINK = False
