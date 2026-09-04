@@ -8,6 +8,7 @@ import locale
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 import qrcode
+import urllib.request
 from markdown import markdown
 from .const import AppConst
 
@@ -54,11 +55,30 @@ def get_jinja_venv():
     return jinja_env
 
 
-def get_html(jinja_env, events: list, pdf_view: bool):
+def calc_radtour_url(request_url: dict) -> str:
+    """ convert request_url to radtour url"""
+    for del_ele in ['beginning', 'end', 'limit']:
+        if del_ele in request_url:
+            del request_url[del_ele]
+    if 'lat' in request_url and 'lng' in request_url:
+        request_url['latLng'] = f"{request_url['lat']},{request_url['lng']}"
+        del request_url['lat']
+        del request_url['lng']
+    urlquery = urllib.parse.urlencode(request_url)
+    radtour_url = f"{AppConst.RADTOUR_BASE_URL}{urlquery}"
+    return radtour_url
+
+
+def get_html(jinja_env, events: list, request_url: dict, pdf_view: bool):
     """ get html output"""
     tmpl = jinja_env.get_template('page.html.j2')
     from_date = None
     to_date = None
+    unitKeys = []
+    if 'unitKeys' in request_url:
+        unitKeys = request_url['unitKeys'].split(',')
+    elif 'unitKey' in request_url:
+        unitKeys = [request_url['unitKey']]
     for e in events:
         if e['eventItem']['beginning'] is not None:
             datum = datetime.fromisoformat(e['eventItem']['beginning'])
@@ -66,12 +86,15 @@ def get_html(jinja_env, events: list, pdf_view: bool):
                 from_date = datum
             if to_date is None or datum > to_date:
                 to_date = datum
+    radtour_url = calc_radtour_url(request_url)
+
     return tmpl.render(events=events,
                        pdf_view=pdf_view,
-                       RADTOUR_URL=AppConst.RADTOUR_URL,
+                       RADTOUR_URL=radtour_url,
                        TOUR_URL_PREFIX=AppConst.TOUR_URL_PREFIX,
                        VERSION=AppConst.VERSION,
                        SHOW_API_LINK=AppConst.SHOW_API_LINK,
                        today=datetime.now().isoformat(),
                        from_date=from_date.isoformat(),
-                       to_date=to_date.isoformat())
+                       to_date=to_date.isoformat(),
+                       unitKeys=unitKeys)
