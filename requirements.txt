@@ -1,4 +1,4 @@
-fastapi[standard]==0.141.1
-weasyprint==69.0
+fastapi[standard]==0.142.2
+weasyprint==70.0
 qrcode==8.2
-markdown==3.10.3
+markdown==3.11
