@@ -1,10 +1,6 @@
-FROM python:3.14-alpine
+FROM python:3.14-slim-bookworm
 
-RUN apk update \
- && apk upgrade \
- && apk add pango harfbuzz-subset libjpeg-turbo-dev openjpeg-dev libffi-dev font-dejavu \
- && apk cache clean \
- && rm -rf /var/cache/apk/* /lib/apk/db/*
+RUN apt update && apt upgrade --yes && apt install --yes python3-pip libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 libjpeg-dev libopenjp2-7-dev libffi-dev locales locales-all && apt clean
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
