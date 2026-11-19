@@ -41,6 +41,7 @@ def get_adfc_events(request_dict):
 
 
 def get_request_dict(lat: float = None, lng: float = None,
+                     latLng: str = None,
                      distance: int = 20,
                      beginning: str = None, end: str = None,
                      unitKey: str = None, unitKeys: list = None,
@@ -54,6 +55,12 @@ def get_request_dict(lat: float = None, lng: float = None,
     if lng is not None:
         request_dict['lng'] = lng
         loc = True
+    if latLng is not None:
+        latLng = latLng.split(',')
+        if len(latLng) == 2:
+            request_dict['lat'] = latLng[0]
+            request_dict['lng'] = latLng[1]
+            loc = True
     if loc:
         request_dict['distance'] = distance
     if beginning is not None:
@@ -63,6 +70,7 @@ def get_request_dict(lat: float = None, lng: float = None,
     if unitKey is not None:
         request_dict['unitKey'] = unitKey
     if unitKeys:
+        print("unitKeys", unitKeys)
         request_dict['unitKeys'] = ",".join(unitKeys)
     request_dict['limit'] = limit
     request_dict['eventType'] = 'Radtour'
@@ -77,15 +85,16 @@ def get_request_dict(lat: float = None, lng: float = None,
          }, response_class=Response
          )
 def root_html(lat: float = None, lng: float = None,
+              latLng: str = None,
               distance: int = 20,
               beginning: str = None, end: str = None,
               unitKey: str = None, unitKeys: list = None,
               limit=10):
     "Query ADFC Api and return in html"
     request_dict = get_request_dict(
-        lat, lng, distance, beginning, end, unitKey, unitKeys, limit)
+        lat, lng, latLng, distance, beginning, end, unitKey, unitKeys, limit)
     events = get_adfc_events(request_dict)
-    html_bytes = get_html(jinja_env, events, False)
+    html_bytes = get_html(jinja_env, events, request_dict, False)
     return Response(content=html_bytes, media_type="text/html", )
 
 
@@ -97,15 +106,16 @@ def root_html(lat: float = None, lng: float = None,
          }, response_class=Response
          )
 def root_pdf(lat: float = None, lng: float = None,
+             latLng: str = None,
              distance: int = 20,
              beginning: str = None, end: str = None,
              unitKey: str = None, unitKeys: list = None,
              limit=10):
     "Query ADFC Api and return as pdf"
     request_dict = get_request_dict(
-        lat, lng, distance, beginning, end, unitKey, unitKeys, limit)
+        lat, lng, latLng, distance, beginning, end, unitKey, unitKeys, limit)
     events = get_adfc_events(request_dict)
-    html_bytes = get_html(jinja_env, events, True)
+    html_bytes = get_html(jinja_env, events, request_dict, True)
     pdf_bytes = html_to_pdf(html_bytes)
     return Response(content=pdf_bytes, media_type="application/pdf")
 

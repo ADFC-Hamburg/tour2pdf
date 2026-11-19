@@ -153,3 +153,8 @@ footer .unten_rechts_seite {
   top: 10mm;
   transform: rotate(270deg);
 }
+.radtour-url {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}

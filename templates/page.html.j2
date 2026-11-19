@@ -110,10 +110,13 @@
     </div>
     {% endif %}
     {% endfor %}
-
+    {% if unitKeys == ['158'] %}
+    {% set ADFC_ORG= 'ADFC Hamburg' %}
+    {% else %}
+    {% set ADFC_ORG= 'ADFC' %}
+    {% endif %}
     <footer>
-        <div class="kasten_unten_links">Auszug aus dem Radtourenprogramm des ADFC
-            Hamburg, für Touren von
+        <div class="kasten_unten_links">Auszug aus dem Radtourenprogramm des {{ ADFC_ORG }}, für Touren von
             {{ from_date |date_format('%d.%m.%Y')}} bis {{ to_date |date_format('%d.%m.%Y')}}.<br>
             Dieser Auszug wurde automatisiert erstellt am
             {{ today |date_format('%d.%m.%Y') }}</div>
@@ -121,7 +124,7 @@
         </div>
         <div class="links">Hinweis: Online finden Sie tages-
                 aktuell unser Tourenangebot unter:<br>
-                {{ RADTOUR_URL }}
+                 <span class="radtour-url">{{ RADTOUR_URL }}</span>
                 und QR-Code mit dem Link zu
                 unseren Touren </div>
         <img class="rechts" src="{{ RADTOUR_URL | qrcode }}" alt="QR-Code mit Link zur Touren-Übersicht">

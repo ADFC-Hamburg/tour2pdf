@@ -25,12 +25,27 @@
         </script>
         </p>
         <p>Oder:</p>
+        <p>1. Gehe auf <a href="https://touren-termine.adfc.de" target="_blank">https://touren-termine.adfc.de</a> und mache eine gute Suche.</p>
 
-        <p>1. Gehe auf https://touren-termine.adfc.de/ und mache eine gute Suche.</p>
+        <p>2. Füge die URL hier ein:</p>
 
-        <p>2. Nimm die URL, entferne den Teil:
-            <b>https://touren-termine.adfc.de/suche?</b>
-           und erstze ihn durch die URL die im Browser steht und den Wörtern: /api/pdf? oder /api/html?</p>
+        <form id="urlForm">
+            <input type="text" id="tourUrl" placeholder="https://touren-termine.adfc.de/suche?..." style="width: 100%; margin-bottom: 10px;">
+            <button type="button" onclick="generateUrl('pdf')">PDF erzeugen</button>
+            <button type="button" onclick="generateUrl('html')">HTML erzeugen</button>
+        </form>
+
+        <script>
+            function generateUrl(type) {
+                const inputUrl = document.getElementById('tourUrl').value;
+                if (!inputUrl.startsWith('https://touren-termine.adfc.de/suche?')) {
+                    alert('Bitte eine gültige URL von https://touren-termine.adfc.de/suche? einfügen.');
+                    return;
+                }
+                const apiUrl = inputUrl.replace('https://touren-termine.adfc.de/suche?', `/api/${type}?`);
+                window.open(apiUrl, '_blank');
+            }
+        </script>
     </body>
 </html>
 
